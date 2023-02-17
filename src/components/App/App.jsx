@@ -4,7 +4,9 @@ import ContactForm from '../ContactForm/ContactForm';
 import ContactList from '../ContactList/ContactList';
 
 const App = () => {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(
+    () => JSON.parse(localStorage.getItem('contacts')) ?? []
+  );
   const [filter, setFilter] = useState('');
 
   const addContact = newContact => {
@@ -34,13 +36,6 @@ const App = () => {
       contact.name.toLowerCase().includes(filter.toLowerCase())
     );
   };
-
-  useEffect(() => {
-    const contactsFromLocalStorage = JSON.parse(
-      localStorage.getItem('contacts')
-    );
-    contactsFromLocalStorage && setContacts(contactsFromLocalStorage);
-  }, []);
 
   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
